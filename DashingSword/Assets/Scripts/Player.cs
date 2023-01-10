@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent (typeof (AnimatorManager))]
 [RequireComponent (typeof (PlayerController))]
 public class Player : MonoBehaviour
 {
@@ -13,17 +14,20 @@ public class Player : MonoBehaviour
     Transform mainCam;
     PlayerController playerController;
     AnimatorManager animatorManager;
+    CameraManager cameraManager;
 
     void Start()
     {
         playerController = GetComponent<PlayerController>();
         animatorManager = GetComponent<AnimatorManager>();
         mainCam = Camera.main.transform;
+        cameraManager = mainCam.GetComponentInParent<CameraManager>();
     }
 
     void Update()
     {
         MovementInput();
+        MouseInput();
     }
 
     private void MovementInput()
@@ -47,7 +51,6 @@ public class Player : MonoBehaviour
         //moveVelocity = transform.TransformDirection(moveVelocity);
 
         playerController.SetVelocity(moveVelocity);
-
     }
 
     void HandleRotation(Vector3 targetDirection)
@@ -59,5 +62,11 @@ public class Player : MonoBehaviour
 
         Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+    }
+
+    private void MouseInput()
+    {
+        Vector2 cameraInput = new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
+        cameraManager.SetCameraInputValues(cameraInput);
     }
 }
