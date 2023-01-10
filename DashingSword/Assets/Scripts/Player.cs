@@ -26,7 +26,11 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        MovementInput();
+        MovementInput();        
+    }
+
+    private void LateUpdate()
+    {
         MouseInput();
     }
 
@@ -40,6 +44,7 @@ public class Player : MonoBehaviour
         Vector3 moveVelocity = mainCam.forward * moveInput.z;
         moveVelocity += mainCam.right * moveInput.x;
         moveVelocity = moveVelocity.normalized;
+        moveVelocity.y = 0;
 
         HandleRotation(moveVelocity);
 
@@ -53,7 +58,7 @@ public class Player : MonoBehaviour
         playerController.SetVelocity(moveVelocity);
     }
 
-    void HandleRotation(Vector3 targetDirection)
+    private void HandleRotation(Vector3 targetDirection)
     {
         targetDirection.y = 0;
 
