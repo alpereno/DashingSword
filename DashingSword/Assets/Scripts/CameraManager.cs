@@ -5,36 +5,46 @@ using UnityEngine;
 public class CameraManager : MonoBehaviour
 {
     [SerializeField] private Transform cameraPivot;         // The object the camera uses to pivot.
-    [SerializeField] private Transform targetTransform;     // The object the camera will follow.
-    [SerializeField] private Transform cameraTransform;     // The transform of the actual camera object.
+    Transform targetTransform;     // The object the camera will follow.
+    Transform cameraTransform;     // The transform of the actual camera object.
+
+    [Header("Camera Follow Variables")]
     [SerializeField] private float cameraFollowSpeed = .2f;
     [SerializeField] private float cameraLookSpeed = 2;
     [SerializeField] private float cameraPivotSpeed = 2;
     [SerializeField] private Vector2 pivotAngleMinMax;
+
+    [Header("Camera Collisions")]
     [SerializeField] private float cameraCollisionRadius = 2;
     [SerializeField] private LayerMask collisionLayers;         // The layers we want to our camera collide with.
     [SerializeField] private float cameraCollisionOffset = .2f; // How much the camera will jump off of objects its colliding with.
     [SerializeField] private float minimumCollisionOffset = .2f;
 
-    private Vector3 cameraFollowVelocity = Vector3.zero;
-    private Vector3 cameraVectorPosition;
+    Vector3 cameraFollowVelocity = Vector3.zero;
+    Vector3 cameraVectorPosition;
+
     float mouseInputX;
     float mouseInputY;
     float defaultPosition;
 
-    public float lookAngle;     // Camera looking up and down
-    public float pivotAngle;    // Camera looking left and right
+    float lookAngle;     // Camera looking up and down
+    float pivotAngle;    // Camera looking left and right
 
     void Start()
     {
         targetTransform = FindObjectOfType<Player>().transform;
+        print(targetTransform.name);
         cameraTransform = Camera.main.transform;
         defaultPosition = cameraTransform.localPosition.z;
     }
 
-    void LateUpdate()
+    private void FixedUpdate()
     {
         FollowTarget();
+    }
+
+    private void LateUpdate()
+    {
         RotateCamera();
         CheckCameraCollisions();
     }
@@ -44,6 +54,8 @@ public class CameraManager : MonoBehaviour
         Vector3 targetPosition = Vector3.SmoothDamp
             (transform.position, targetTransform.position, ref cameraFollowVelocity, cameraFollowSpeed);
         transform.position = targetPosition;
+
+        //transform.position = Vector3.Lerp(transform.position, targetTransform.position, cameraFollowSpeed);
     }
 
     private void RotateCamera()

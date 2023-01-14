@@ -7,8 +7,11 @@ using UnityEngine;
 [RequireComponent (typeof (PlayerController))]
 public class Player : MonoBehaviour
 {
-    [SerializeField] private float walkSpeed = 4;
-    [SerializeField] private float runSpeed = 6;
+    [Header("Movement")]
+    [SerializeField] private float walkSpeed = 1.5f;
+    [SerializeField] private float runSpeed = 5;
+
+    [Header("Rotation")]
     [SerializeField] private float rotationSpeed = 15;
 
     Transform mainCam;
@@ -26,17 +29,13 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        MovementInput();        
-    }
-
-    private void LateUpdate()
-    {
+        MovementInput();
         MouseInput();
     }
 
     private void MovementInput()
     {
-        Vector3 moveInput = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
+        Vector3 moveInput = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
 
         float moveAmount = Mathf.Clamp01(Mathf.Abs(moveInput.x) + Mathf.Abs(moveInput.z));
         animatorManager.UpdateAnimatorValues(0, moveAmount);
@@ -47,10 +46,19 @@ public class Player : MonoBehaviour
         moveVelocity.y = 0;
 
         HandleRotation(moveVelocity);
-
-        if (Input.GetKey(KeyCode.LeftShift))
+        
+        if (moveAmount > .5f)
+        {
             moveVelocity *= runSpeed;
-        else moveVelocity *= walkSpeed;
+        }
+        else
+        {
+            moveVelocity *= walkSpeed;
+        }
+
+        //if (Input.GetKey(KeyCode.LeftShift))
+        //    moveVelocity *= runSpeed;
+        //else moveVelocity *= walkSpeed;
 
         //FPS game move direction (relative to local coordinate system)
         //moveVelocity = transform.TransformDirection(moveVelocity);
