@@ -7,7 +7,10 @@ using UnityEngine;
 [RequireComponent(typeof(PlayerController))]
 public class Player : MonoBehaviour
 {
-    public event System.Action<float> OnDashing;
+    public enum State { Movement, Attack, Idle };
+    State currentState;
+
+    public event Action<float> OnDashing;
 
     [Header("Movement")]
     [SerializeField] private float walkSpeed = 1.5f;
@@ -21,10 +24,10 @@ public class Player : MonoBehaviour
     [SerializeField] private float dashMultiplier = 2.5f;
     [SerializeField] private float msBetweenDash = 2000;
     bool dashing;
-    float nextDashTime;
 
     Transform mainCam;
     PlayerController playerController;
+    SwordController swordController;
     AnimatorManager animatorManager;
     CameraManager cameraManager;
 
@@ -34,44 +37,40 @@ public class Player : MonoBehaviour
         animatorManager = GetComponent<AnimatorManager>();
         mainCam = Camera.main.transform;
         cameraManager = mainCam.GetComponentInParent<CameraManager>();
+
+        currentState = State.Movement;
     }
 
     void Update()
     {
         MovementInput();
+        AttackInput();
         MouseInput();
     }
 
     private void MovementInput()
     {
-        Vector3 moveInput = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
-
-        float moveAmount = Mathf.Clamp01(Mathf.Abs(moveInput.x) + Mathf.Abs(moveInput.z));
-        animatorManager.UpdateAnimatorValues(0, moveAmount);
-
-        Vector3 moveVelocity = mainCam.forward * moveInput.z;
-        moveVelocity += mainCam.right * moveInput.x;
-        moveVelocity = moveVelocity.normalized;
-        moveVelocity.y = 0;
-
-        // Dashing Input
-        if (Input.GetKeyDown(KeyCode.E))
+        if (currentState == State.Movement)
         {
-            //dashing = true;
-            //playerController.Dash(moveVelocity);
+            Vector3 moveInput = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
 
-            // U can make effects with trail renderer
-            if (Time.time > nextDashTime)
+            float moveAmount = Mathf.Clamp01(Mathf.Abs(moveInput.x) + Mathf.Abs(moveInput.z));
+            animatorManager.UpdateAnimatorValues(0, moveAmount);
+
+            Vector3 moveVelocity = mainCam.forward * moveInput.z;
+            moveVelocity += mainCam.right * moveInput.x;
+            moveVelocity = moveVelocity.normalized;
+            moveVelocity.y = 0;
+
+            // Dashing Input
+            if (Input.GetKeyDown(KeyCode.E))
             {
-                if (moveVelocity.sqrMagnitude > 0)
+                dashing = playerController.Dash(moveVelocity, dashMultiplier, msBetweenDash);
+
+                if (dashing)
                 {
-                    dashing = true;
-                    nextDashTime = Time.time + msBetweenDash / 1000f;
-
-                    playerController.Dash(dashMultiplier);
-                    Invoke("DisableDashing", dashTime);
-
                     animatorManager.UpdateDashValue(dashing);
+                    Invoke("DisableDashing", dashTime);
 
                     if (OnDashing != null)
                     {
@@ -79,42 +78,18 @@ public class Player : MonoBehaviour
                     }
                 }
             }
+
+            playerController.HandleRotation(moveVelocity, rotationSpeed);
+
+            moveVelocity *= (moveAmount > .5f) ? runSpeed : walkSpeed;
+
+            //FPS game move direction (relative to local coordinate system)
+            //moveVelocity = transform.TransformDirection(moveVelocity);
+            if (!dashing)
+            {
+                playerController.SetVelocity(moveVelocity);
+            }
         }
-
-        HandleRotation(moveVelocity);
-
-        if (moveAmount > .5f)
-        {
-            moveVelocity *= runSpeed;
-        }
-        else
-        {
-            moveVelocity *= walkSpeed;
-        }
-
-        //if (Input.GetKey(KeyCode.LeftShift))
-        //    moveVelocity *= runSpeed;
-        //else moveVelocity *= walkSpeed;
-
-        //FPS game move direction (relative to local coordinate system)
-        //moveVelocity = transform.TransformDirection(moveVelocity);
-        print("is dashing = " + dashing);
-        if (!dashing)
-        {
-            playerController.SetVelocity(moveVelocity);
-        }        
-    }
-
-
-    private void HandleRotation(Vector3 targetDirection)
-    {
-        targetDirection.y = 0;
-
-        if (targetDirection == Vector3.zero)
-            targetDirection = transform.forward;
-
-        Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
-        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
     }
 
     private void MouseInput()
@@ -123,10 +98,19 @@ public class Player : MonoBehaviour
         cameraManager.SetCameraInputValues(cameraInput);
     }
 
+    private void AttackInput()
+    {
+        //if (Input.GetMouseButtonDown(0))
+        //{
+        //    // U can check if the player has a sword (it could be depends of sword controller script's a bool property)
+        //    currentState = State.Attack;
+        //    //swordController.Attack();
+        //}
+    }
+
     private void DisableDashing()
     {
         dashing = false;
-        //playerController.DisableDashing();
         animatorManager.UpdateDashValue(dashing);
     }
 }

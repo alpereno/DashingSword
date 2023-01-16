@@ -357,6 +357,8 @@
 "Assets/Scripts/CameraManager.cs"
 "Assets/Scripts/Player.cs"
 "Assets/Scripts/PlayerController.cs"
+"Assets/Scripts/Sword.cs"
+"Assets/Scripts/SwordController.cs"
 -langversion:9.0
 
 /deterministic

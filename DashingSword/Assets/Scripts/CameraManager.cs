@@ -40,8 +40,7 @@ public class CameraManager : MonoBehaviour
     {
         player = FindObjectOfType<Player>();
         targetTransform = player.transform;
-        player.OnDashing += DashingFOV;
-        print(targetTransform.name);
+        player.OnDashing += DashingFOV;         // Event Subscribe
         mainCamera = Camera.main;
         cameraTransform = mainCamera.transform;
         defaultPosition = cameraTransform.localPosition.z;

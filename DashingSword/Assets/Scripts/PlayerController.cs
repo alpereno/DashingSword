@@ -5,24 +5,16 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerController : MonoBehaviour
 {
-    //[SerializeField] private float dashForceAmount = 10;
     //public event System.Action<float> OnDashing;
 
     Rigidbody playerRb;
     Vector3 velocity;
 
-    //[Header("Dashing")]
-    //[SerializeField] private float dashTime = .4f;
-    //[SerializeField] private float dashMultiplier = 2.5f;
-    //[SerializeField] private float msBetweenDash = 2000;
-    bool dashing;
-    //float nextDashTime;
-    //AnimatorManager animm;
+    float nextDashTime;
 
     void Start()
     {
         playerRb = GetComponent<Rigidbody>();
-        //animm = GetComponent<AnimatorManager>();
     }
 
     void FixedUpdate()
@@ -32,45 +24,30 @@ public class PlayerController : MonoBehaviour
 
     public void SetVelocity(Vector3 _velocity)
     {
-        //if (!dashing)
-        //{
-        //    velocity = _velocity;
-        //}
         velocity = _velocity;
     }
 
-    //public void Dash(Vector3 direction)
-    //{
-    //    //playerRb.AddForce(direction * dashForceAmount, ForceMode.Impulse);
-
-    //    // U can make effects with trail renderer
-    //    if (Time.time > nextDashTime)
-    //    {
-    //        if (direction.sqrMagnitude > 0)
-    //        {
-    //            dashing = true;
-    //            nextDashTime = Time.time + msBetweenDash / 1000f;
-    //            velocity *= dashMultiplier;
-
-    //            Invoke("DisableDashing", dashTime);
-    //            animm.Dash(dashing);
-
-    //            if (OnDashing != null)
-    //            {
-    //                OnDashing(dashTime);
-    //            }
-    //        }
-    //    }
-    //}
-
-    public void Dash(float dashAmount)
+    public void HandleRotation(Vector3 targetDirection, float rotationSpeed)
     {
-        velocity *= dashAmount;
+        targetDirection.y = 0;
+
+        if (targetDirection == Vector3.zero)
+            targetDirection = transform.forward;
+
+        Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
     }
 
-    //// disable dashing effects
-    //public void DisableDashing()
-    //{        
-    //    dashing = false;
-    //}
+    public bool Dash(Vector3 moveVelocity, float dashAmount, float msBetweenDash)
+    {
+        if (Time.time > nextDashTime)
+        {
+            if (moveVelocity.sqrMagnitude <= 0) return false; // it wont be less then 0 cause its sqrMagnitde
+
+            nextDashTime = Time.time + msBetweenDash / 1000;
+            velocity *= dashAmount;
+            return true;
+        }
+        else return false;
+    }
 }
