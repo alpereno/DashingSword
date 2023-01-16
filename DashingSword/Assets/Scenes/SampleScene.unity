@@ -1398,6 +1398,7 @@ MonoBehaviour:
     m_Bits: 384
   cameraCollisionOffset: 0.5
   minimumCollisionOffset: 0.2
+  dashingFOVValue: 75
 --- !u!4 &2091835099
 Transform:
   m_ObjectHideFlags: 0
@@ -2265,6 +2266,7 @@ MonoBehaviour:
   walkSpeed: 4
   runSpeed: 6
   rotationSpeed: 15
+  dashing: 0
 --- !u!114 &919132148147368901
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2277,6 +2279,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1f615718a2b3e8428533c7156c5ab9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dashing: 0
+  dashTime: 0
+  dashMultiplier: 0
+  msBetweenDash: 2000
 --- !u!54 &919132148147368902
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3279,6 +3285,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Erika Archer
       objectReference: {fileID: 0}
+    - target: {fileID: 333029188126864902, guid: 496644c9b685c0d4ba5c499c0d66b04a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1140810266461809852, guid: 496644c9b685c0d4ba5c499c0d66b04a, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -3323,9 +3333,51 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4865200586701491240, guid: 496644c9b685c0d4ba5c499c0d66b04a, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4865200586701491240, guid: 496644c9b685c0d4ba5c499c0d66b04a, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -1.8732318e-12
+      objectReference: {fileID: 0}
+    - target: {fileID: 4865200586701491240, guid: 496644c9b685c0d4ba5c499c0d66b04a, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.0000010519869
+      objectReference: {fileID: 0}
+    - target: {fileID: 4865200586701491240, guid: 496644c9b685c0d4ba5c499c0d66b04a, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.000034628327
+      objectReference: {fileID: 0}
+    - target: {fileID: 4865200586701491240, guid: 496644c9b685c0d4ba5c499c0d66b04a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4865200586701491240, guid: 496644c9b685c0d4ba5c499c0d66b04a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4865200586701491240, guid: 496644c9b685c0d4ba5c499c0d66b04a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6427995871424476858, guid: 496644c9b685c0d4ba5c499c0d66b04a, type: 3}
       propertyPath: m_Interpolate
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6427995871424476868, guid: 496644c9b685c0d4ba5c499c0d66b04a, type: 3}
+      propertyPath: dashTime
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6427995871424476868, guid: 496644c9b685c0d4ba5c499c0d66b04a, type: 3}
+      propertyPath: dashMultiplier
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6427995871424476870, guid: 496644c9b685c0d4ba5c499c0d66b04a, type: 3}
+      propertyPath: m_WarningMessage
+      value: "\nBinding warning: Some generic clip(s) animate transforms that are
+        already bound by a Humanoid avatar. These transforms can only be changed
+        by Humanoid clips.\n\tTransform 'mixamorig:Hips'\n\tFrom animation clip 'temp'"
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 496644c9b685c0d4ba5c499c0d66b04a, type: 3}
@@ -5260,9 +5312,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4fafae2a3a4bff4ba387daf6419fa0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  walkSpeed: 4
-  runSpeed: 6
+  walkSpeed: 1.5
+  runSpeed: 5
   rotationSpeed: 15
+  dashing: 0
 --- !u!114 &7883026228790758062
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5275,6 +5328,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1f615718a2b3e8428533c7156c5ab9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dashing: 0
+  dashTime: 0.4
+  dashMultiplier: 2.5
+  msBetweenDash: 2000
 --- !u!54 &7883026228790758063
 Rigidbody:
   m_ObjectHideFlags: 0

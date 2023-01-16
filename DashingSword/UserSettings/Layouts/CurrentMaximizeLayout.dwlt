@@ -24,7 +24,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 200}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 0
-  controlID: 8743
+  controlID: 10431
 --- !u!114 &2
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -141,7 +141,7 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 200}
   m_MaxSize: {x: 16192, y: 16192}
   vertical: 1
-  controlID: 8744
+  controlID: 10432
 --- !u!114 &4
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -166,7 +166,7 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 100}
   m_MaxSize: {x: 16192, y: 8096}
   vertical: 0
-  controlID: 8745
+  controlID: 10433
 --- !u!114 &5
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -224,9 +224,9 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 225b0000
-      m_LastClickedID: 23330
-      m_ExpandedIDs: 36fbffff0a5a00000e5a0000
+      m_SelectedIDs: e4f9ffff
+      m_LastClickedID: -1564
+      m_ExpandedIDs: 36fbffff1e5a0000225a0000
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -536,9 +536,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 0.103711605, y: 1.5203662, z: -0.58455217}
+    m_Target: {x: 0.2273078, y: 1.2906122, z: 0.25162107}
     speed: 2
-    m_Value: {x: 0.103711605, y: 1.5203662, z: -0.58455217}
+    m_Value: {x: 0.2273078, y: 1.2906122, z: 0.25162107}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -585,13 +585,13 @@ MonoBehaviour:
     m_GridAxis: 1
     m_gridOpacity: 0.5
   m_Rotation:
-    m_Target: {x: 0.17990375, y: 0.71452814, z: -0.19890192, w: 0.6462554}
+    m_Target: {x: 0.11533596, y: -0.4591747, z: 0.060277555, w: 0.8788337}
     speed: 2
-    m_Value: {x: 0.17989261, y: 0.7144839, z: -0.19888961, w: 0.6462154}
+    m_Value: {x: -0.115335956, y: 0.4591747, z: -0.06027755, w: -0.87883365}
   m_Size:
-    m_Target: 1.0562286
+    m_Target: 0.9393563
     speed: 2
-    m_Value: 1.0562286
+    m_Value: 0.9393563
   m_Ortho:
     m_Target: 0
     speed: 2
@@ -768,22 +768,22 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Prefabs
+    - Assets/Animations/new
     m_Globs: []
     m_OriginalText: 
   m_ViewMode: 1
   m_StartGridSize: 78
   m_LastFolders:
-  - Assets/Prefabs
+  - Assets/Animations/new
   m_LastFoldersGridSize: 78
   m_LastProjectPath: D:\Projects\GitProjects\DashingSword\DashingSword
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 345f0000
-    m_LastClickedID: 24372
-    m_ExpandedIDs: 00000000285f000000ca9a3b
+    m_SelectedIDs: 14c10000
+    m_LastClickedID: 49428
+    m_ExpandedIDs: 000000004c5f0000645f000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -811,7 +811,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000285f000000ca9a3b
+    m_ExpandedIDs: 000000004c5f000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -836,10 +836,10 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
   m_ListAreaState:
-    m_SelectedInstanceIDs: 225b0000
-    m_LastClickedInstanceID: 23330
+    m_SelectedInstanceIDs: e4f9ffff
+    m_LastClickedInstanceID: -1564
     m_HadKeyboardFocusLastEvent: 1
-    m_ExpandedInstanceIDs: c62300002c620000
+    m_ExpandedInstanceIDs: c62300002c6200001cc10000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -925,7 +925,7 @@ MonoBehaviour:
     m_SaveData: []
   m_LockTracker:
     m_IsLocked: 0
-  m_LastSelectedObjectID: 23054
+  m_LastSelectedObjectID: -1564
 --- !u!114 &14
 MonoBehaviour:
   m_ObjectHideFlags: 52

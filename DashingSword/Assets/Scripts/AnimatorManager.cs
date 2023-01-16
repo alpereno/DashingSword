@@ -69,4 +69,9 @@ public class AnimatorManager : MonoBehaviour
         animator.SetFloat(horizontal, snappedHorizontal, .1f, Time.deltaTime);
         animator.SetFloat(vertical, snappedVertical, .1f, Time.deltaTime);
     }
+
+    public void UpdateDashValue(bool dashing)
+    {        
+        animator.SetBool("Dash", dashing);
+    }
 }

@@ -7,6 +7,8 @@ public class CameraManager : MonoBehaviour
     [SerializeField] private Transform cameraPivot;         // The object the camera uses to pivot.
     Transform targetTransform;     // The object the camera will follow.
     Transform cameraTransform;     // The transform of the actual camera object.
+    Camera mainCamera;
+    Player player;
 
     [Header("Camera Follow Variables")]
     [SerializeField] private float cameraFollowSpeed = .2f;
@@ -29,12 +31,19 @@ public class CameraManager : MonoBehaviour
 
     float lookAngle;     // Camera looking up and down
     float pivotAngle;    // Camera looking left and right
+    
+    // Dashing
+    float fovDashTime;
+    float dashingFOVValue = 75;
 
     void Start()
     {
-        targetTransform = FindObjectOfType<Player>().transform;
+        player = FindObjectOfType<Player>();
+        targetTransform = player.transform;
+        player.OnDashing += DashingFOV;
         print(targetTransform.name);
-        cameraTransform = Camera.main.transform;
+        mainCamera = Camera.main;
+        cameraTransform = mainCamera.transform;
         defaultPosition = cameraTransform.localPosition.z;
     }
 
@@ -103,5 +112,31 @@ public class CameraManager : MonoBehaviour
     {
         mouseInputX = mouseInput.x;
         mouseInputY = mouseInput.y;
+    }
+
+    private void DashingFOV(float dashTime)
+    {
+        fovDashTime = dashTime;
+        StartCoroutine(DashingFOV());
+    }
+
+    IEnumerator DashingFOV()
+    {
+        float startingValue = mainCamera.fieldOfView;
+        float endValue = dashingFOVValue;
+        float increaseSpeed = 1 / (fovDashTime * 2.5f); // 1 
+        float percent = 0;
+
+        while (percent <= 1)
+        {
+            percent += increaseSpeed * Time.deltaTime;
+            //percent should be start pos go to max pos and BACK to start pos so value be 0 to 1 and back to 0 again
+            //when x=0 y=0, x=1 y=0, x=1/2 y=1  so solve the inspired by y=a(x-x1)(x-x2) equations a=-4
+            //so parabola equation working y = 4(-x^2+x)            when percent 1/2 value is 1
+            // 4(-percent*percent + percent)
+            float interpolation = 4 * (-percent * percent + percent);
+            mainCamera.fieldOfView = Mathf.Lerp(startingValue, endValue, interpolation);
+            yield return null;
+        }
     }
 }
