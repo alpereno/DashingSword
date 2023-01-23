@@ -8,12 +8,14 @@ public class AnimatorManager : MonoBehaviour
     Animator animator;
     int horizontal;
     int vertical;
+    AnimationClip[] clips;
 
     void Start()
     {
         animator = GetComponent<Animator>();
         horizontal = Animator.StringToHash("Horizontal");
         vertical = Animator.StringToHash("Vertical");
+        clips = animator.runtimeAnimatorController.animationClips;
     }
 
     public void UpdateAnimatorValues(float horizontalInput, float verticalInput)
@@ -73,5 +75,17 @@ public class AnimatorManager : MonoBehaviour
     public void UpdateDashValue(bool dashing)
     {        
         animator.SetBool("Dash", dashing);
+    }
+
+    public float PlayAttackAnimation()
+    {
+        animator.SetTrigger("AttackOne");
+        print(clips[4].length);
+        return clips[4].length;
+    }
+
+    public void AnimationSetBool(string parameterString, bool value)
+    {
+        animator.SetBool(parameterString, value);
     }
 }

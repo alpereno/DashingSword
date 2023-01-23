@@ -20,10 +20,14 @@ public class Player : MonoBehaviour
     [SerializeField] private float rotationSpeed = 15;
 
     [Header("Dashing")]
-    [SerializeField] private float dashTime = .4f;
+    [SerializeField] private float dashTime = .4f;              // How long is the dashing move
     [SerializeField] private float dashMultiplier = 2.5f;
-    [SerializeField] private float msBetweenDash = 2000;
+    [SerializeField] private float msBetweenDash = 2000;        // Time that must pass between each dashing move (in miliseconds)
     bool dashing;
+
+    [Header("Attack")]
+    [SerializeField] private float msBetweenAttacks = 5000;
+    bool isAttackingContinue;
 
     Transform mainCam;
     PlayerController playerController;
@@ -35,6 +39,7 @@ public class Player : MonoBehaviour
     {
         playerController = GetComponent<PlayerController>();
         animatorManager = GetComponent<AnimatorManager>();
+        swordController = GetComponent<SwordController>();
         mainCam = Camera.main.transform;
         cameraManager = mainCam.GetComponentInParent<CameraManager>();
 
@@ -63,6 +68,7 @@ public class Player : MonoBehaviour
             moveVelocity.y = 0;
 
             // Dashing Input
+            // The Dashing can only be when the player on moving
             if (Input.GetKeyDown(KeyCode.E))
             {
                 dashing = playerController.Dash(moveVelocity, dashMultiplier, msBetweenDash);
@@ -100,17 +106,32 @@ public class Player : MonoBehaviour
 
     private void AttackInput()
     {
-        //if (Input.GetMouseButtonDown(0))
-        //{
-        //    // U can check if the player has a sword (it could be depends of sword controller script's a bool property)
-        //    currentState = State.Attack;
-        //    //swordController.Attack();
-        //}
+        if (Input.GetMouseButtonDown(0))
+        {
+            //// U can check if the player has a sword (it could be depends of sword controller script's a bool property)
+            if (!isAttackingContinue)
+            {
+                isAttackingContinue = true;
+                currentState = State.Attack;
+                swordController.Attack(msBetweenAttacks);
+                playerController.SetVelocity(Vector3.zero);
+                animatorManager.AnimationSetBool("Moving", false);                
+                float attackTime = animatorManager.PlayAttackAnimation();
+                Invoke("DisableAttacking", attackTime);
+            }
+        }
     }
 
     private void DisableDashing()
     {
         dashing = false;
         animatorManager.UpdateDashValue(dashing);
+    }
+
+    private void DisableAttacking()
+    {
+        isAttackingContinue = false;
+        currentState = State.Movement;
+        animatorManager.AnimationSetBool("Moving", true);
     }
 }
