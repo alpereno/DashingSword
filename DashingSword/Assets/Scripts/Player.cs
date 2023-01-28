@@ -26,8 +26,8 @@ public class Player : MonoBehaviour
     bool dashing;
 
     [Header("Attack")]
-    [SerializeField] private float msBetweenAttacks = 5000;
-    bool isAttackingContinue;
+    [SerializeField] private float msBetweenAttacks = 1500;
+    //bool isAttackingContinue;
 
     Transform mainCam;
     PlayerController playerController;
@@ -40,6 +40,7 @@ public class Player : MonoBehaviour
         playerController = GetComponent<PlayerController>();
         animatorManager = GetComponent<AnimatorManager>();
         swordController = GetComponent<SwordController>();
+        swordController.OnAttackEnded += OnAttackEnded;
         mainCam = Camera.main.transform;
         cameraManager = mainCam.GetComponentInParent<CameraManager>();
 
@@ -108,16 +109,27 @@ public class Player : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            //// U can check if the player has a sword (it could be depends of sword controller script's a bool property)
-            if (!isAttackingContinue)
+            # region OBSOLETE ATTACKING
+            //      OBSOLETE
+            // U can check if the player has a sword (it could be depends of sword controller script's a bool property)
+            //if (!isAttackingContinue)
+            //{
+            //    isAttackingContinue = true;
+            //    currentState = State.Attack;
+            //    swordController.Attack(msBetweenAttacks);
+            //    playerController.SetVelocity(Vector3.zero);
+            //    animatorManager.AnimationSetBool("Moving", false);
+            //    float attackTime = animatorManager.PlayAttackAnimation();
+            //    Invoke("DisableAttacking", attackTime);
+            //}
+            #endregion
+
+            bool isAttacking = swordController.AttackWithAnimation(msBetweenAttacks);
+            if (isAttacking)
             {
-                isAttackingContinue = true;
                 currentState = State.Attack;
-                swordController.Attack(msBetweenAttacks);
                 playerController.SetVelocity(Vector3.zero);
-                animatorManager.AnimationSetBool("Moving", false);                
-                float attackTime = animatorManager.PlayAttackAnimation();
-                Invoke("DisableAttacking", attackTime);
+                animatorManager.AnimationSetBool("Moving", false);
             }
         }
     }
@@ -128,9 +140,18 @@ public class Player : MonoBehaviour
         animatorManager.UpdateDashValue(dashing);
     }
 
-    private void DisableAttacking()
+    #region // OBSOLETE ATTACKING
+    //private void DisableAttacking()
+    //{
+    //    isAttackingContinue = false;
+    //    currentState = State.Movement;
+    //    animatorManager.AnimationSetBool("Moving", true);
+    //}
+    #endregion
+
+    void OnAttackEnded()
     {
-        isAttackingContinue = false;
+        print("on attack ended event");
         currentState = State.Movement;
         animatorManager.AnimationSetBool("Moving", true);
     }

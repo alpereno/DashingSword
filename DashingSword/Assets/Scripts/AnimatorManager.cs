@@ -77,10 +77,12 @@ public class AnimatorManager : MonoBehaviour
         animator.SetBool("Dash", dashing);
     }
 
-    public float PlayAttackAnimation()
+    public float PlayAttackAnimation(string attackTriggerString)
     {
-        animator.SetTrigger("AttackOne");
-        print(clips[4].length);
+        animator.SetTrigger(attackTriggerString);
+        //print("Current = " + clips[4].name + " --- " + clips[4].length);
+        //print("next = " + clips[5].name + " --- " + clips[5].length);
+        //print("next + next = " + clips[6].name + " --- " + clips[5].length);
         return clips[4].length;
     }
 
